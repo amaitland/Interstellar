@@ -11,6 +11,7 @@ open Interstellar.Chromium.WinForms
 open System.Runtime.Versioning
 
 module Main =
+    [<System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)>]
     let runApp () =
         Application.EnableVisualStyles ()
         Application.SetCompatibleTextRenderingDefault true
@@ -19,6 +20,11 @@ module Main =
             // This is where you could call some WinForms-specific APIs on this window
             ()
         BrowserApp.run (SimpleBrowserApp.app onMainWindowCreated)
+
+    [<System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)>]
+    let shutdownCefSharp() =
+        Interstellar.Chromium.Platform.Shutdown ()
+        
     
     [<EntryPoint; STAThread>]
     let main argv =
@@ -26,5 +32,5 @@ module Main =
         Trace.WriteLine (sprintf "Starting app. Main thread id: %A" Thread.CurrentThread.ManagedThreadId)
         Interstellar.Chromium.Platform.Initialize ()
         runApp ()
-        Interstellar.Chromium.Platform.Shutdown ()
+        shutdownCefSharp()
         0
